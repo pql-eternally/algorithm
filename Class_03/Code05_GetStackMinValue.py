@@ -36,10 +36,10 @@ class MyStack(object):
         index = self.size - 1
         return self.stack[index]
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return self.size == 0
 
-    def is_full(self):
+    def is_full(self) -> bool:
         return self.size == self.max_size
 
 
@@ -66,12 +66,12 @@ class GetMinValueStack(object):
         self.min_value_stack.pop()
         return self.data_stack.pop()
 
-    def get_min_value(self):
+    def get_min_value(self) -> int:
         if self.min_value_stack.is_empty():
             raise RuntimeError('栈空了，不能拿数了！')
         return self.min_value_stack.peek()
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return self.data_stack.is_empty()
 
 
