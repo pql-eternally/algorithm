@@ -10,7 +10,10 @@ class Student(object):
 
     def __lt__(self, other):
         """
-        根据age从小到大排序：
+        如果返回负数，认为第一个参数应该拍在前面
+        如果返回正数，认为第二个参数应该拍在前面
+        如果返回0，认为谁放前面都行
+        根据age从小到大排序
         """
         return self.age < other.age
 
