@@ -33,9 +33,22 @@ def test_heap():
         print(item, heap)
 
 
+def test_priority_queue():
+    heap = PriorityQueue()
+    heap.put(2)
+    heap.put(3)
+    heap.put(1)
+    heap.put(4)
+    heap.put(2)
+    while not heap.empty():
+        item = heap.get()
+        print(item)
+
+
 def main():
     # test_queue()
-    test_heap()
+    # test_heap()
+    test_priority_queue()
 
 
 if __name__ == '__main__':
