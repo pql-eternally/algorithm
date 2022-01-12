@@ -94,8 +94,7 @@ class HeapCreator(object):
         self.heap.pop(last_index)
         self.heap_size -= 1
         self.index_map.pop(value)
-        self.heapify(index)
-        self.heap_insert(index)
+        self.resign(index)
 
     def resign(self, index: int):
         """
