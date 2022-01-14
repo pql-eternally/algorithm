@@ -6,8 +6,8 @@
 class HeapCreator(object):
     heap: list = None
     # 索引表
-    index_map = dict = None
-    heap_size = int = 0
+    index_map: dict = None
+    heap_size: int = 0
 
     def __init__(self):
         self.heap = []
