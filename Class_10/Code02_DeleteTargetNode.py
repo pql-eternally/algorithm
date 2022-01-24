@@ -19,6 +19,7 @@ def delete_target_node(head: Node, target: int) -> Node:
     head = pre = None
     while cur:
         next_node = cur.next
+        # 注意要重置下一节点
         cur.next = None
         if cur.value == target:
             cur = next_node
