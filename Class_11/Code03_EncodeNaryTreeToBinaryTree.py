@@ -16,7 +16,7 @@ class Node(object):
         return f'{self.value}, [{",".join(map(str, self.children))}]'
 
 
-class TreeNode(object):
+class BinaryTree(object):
     value: int
     left: None
     right: None
@@ -31,11 +31,11 @@ class TreeNode(object):
 
 
 class Codec(object):
-    def en(self, children: list) -> TreeNode:
+    def en(self, children: list) -> BinaryTree:
         head = None
         cur = None
         for child in children:
-            node = TreeNode(child.value)
+            node = BinaryTree(child.value)
             if head is None:
                 head = node
             else:
@@ -44,17 +44,17 @@ class Codec(object):
             cur.left = self.en(child.children)
         return head
 
-    def encode(self, root: Node) -> TreeNode:
+    def encode(self, root: Node) -> BinaryTree:
         """
         1、N叉树的根节点为二叉树的根节点
         2、N叉树的第一个孩子节点作为父节点左节点，其余兄弟节点一次连接到长兄节点到右子树
         3、所有的子树都按上面的规则
         """
-        tree_root = TreeNode(root.value)
+        tree_root = BinaryTree(root.value)
         tree_root.left = self.en(root.children)
         return tree_root
 
-    def de(self, node: TreeNode) -> list:
+    def de(self, node: BinaryTree) -> list:
         children = []
         while node:
             cur = Node(node.value)
@@ -63,7 +63,7 @@ class Codec(object):
             node = node.right
         return children
 
-    def decode(self, tree_root: TreeNode) -> Node:
+    def decode(self, tree_root: BinaryTree) -> Node:
         """
         二叉树解码N叉树
         """
@@ -86,6 +86,9 @@ def main():
     print(tree_root)
     node = codec.decode(tree_root)
     print(node)
+
+    from Code04_PrintBinaryTree import print_tree
+    print_tree(tree_root)
 
 
 if __name__ == '__main__':
