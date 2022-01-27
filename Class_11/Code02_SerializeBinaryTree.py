@@ -19,7 +19,7 @@ from queue import Queue
 NONE_STR = '#'
 
 
-class BinaryTree(object):
+class Node(object):
     left: None
     right: None
     value: int = None
@@ -39,15 +39,15 @@ class Stack(object):
     def __init__(self):
         self.data = []
 
-    def push(self, node: BinaryTree):
+    def push(self, node: Node):
         self.data.insert(0, node)
 
-    def pop(self) -> BinaryTree:
+    def pop(self) -> Node:
         if self.is_empty():
             raise RuntimeError('empty')
         return self.data.pop(0)
 
-    def peek(self) -> BinaryTree:
+    def peek(self) -> Node:
         if self.is_empty():
             raise RuntimeError('empty')
         return self.data[0]
@@ -59,7 +59,7 @@ class Stack(object):
 ################################################
 #                先序遍历编码解码                #
 ################################################
-def pre_dump(node: BinaryTree, res: list) -> None:
+def pre_dump(node: Node, res: list) -> None:
     if node is None:
         res.append(NONE_STR)
     else:
@@ -68,7 +68,7 @@ def pre_dump(node: BinaryTree, res: list) -> None:
         pre_dump(node.right, res)
 
 
-def pre_dumps(node: BinaryTree) -> str:
+def pre_dumps(node: Node) -> str:
     """
     使用先序遍历序列化二叉树
     1、需要记录每个节点的左右子节点
@@ -79,17 +79,17 @@ def pre_dumps(node: BinaryTree) -> str:
     return res
 
 
-def pre_load(values) -> BinaryTree or None:
+def pre_load(values) -> Node or None:
     value = values.pop(0)
     if value == NONE_STR:
         return None
-    head = BinaryTree(int(value))
+    head = Node(int(value))
     head.left = pre_load(values)
     head.right = pre_load(values)
     return head
 
 
-def pre_loads(values: list) -> BinaryTree or None:
+def pre_loads(values: list) -> Node or None:
     if not values:
         return None
     return pre_load(values)
@@ -98,7 +98,7 @@ def pre_loads(values: list) -> BinaryTree or None:
 ################################################
 #                后序遍历编码解码                #
 ################################################
-def last_dump(node: BinaryTree, res: list) -> None:
+def last_dump(node: Node, res: list) -> None:
     if not node:
         res.append(NONE_STR)
     else:
@@ -107,24 +107,24 @@ def last_dump(node: BinaryTree, res: list) -> None:
         res.append(node.value)
 
 
-def last_dumps(node: BinaryTree) -> str:
+def last_dumps(node: Node) -> str:
     res = []
     last_dump(node, res)
     return ','.join(map(str, res))
 
 
-def last_load(stack: Stack) -> BinaryTree or None:
+def last_load(stack: Stack) -> Node or None:
     value = stack.pop()
     if value == NONE_STR:
         return None
     # 左右根  使用栈  根右左
-    head = BinaryTree(value)
+    head = Node(value)
     head.right = last_load(stack)
     head.left = last_load(stack)
     return head
 
 
-def last_loads(values: list) -> BinaryTree or None:
+def last_loads(values: list) -> Node or None:
     if not values:
         return None
     stack = Stack()
@@ -136,7 +136,7 @@ def last_loads(values: list) -> BinaryTree or None:
 ################################################
 #                按层遍历编码解码                #
 ################################################
-def level_dumps(node: BinaryTree) -> str:
+def level_dumps(node: Node) -> str:
     res = []
     queue = Queue()
     queue.put(node)
@@ -151,13 +151,13 @@ def level_dumps(node: BinaryTree) -> str:
     return ','.join(map(str, res))
 
 
-def generate_node(value: str) -> BinaryTree or None:
+def generate_node(value: str) -> Node or None:
     if value == NONE_STR:
         return None
-    return BinaryTree(value)
+    return Node(value)
 
 
-def level_loads(values: list) -> BinaryTree or None:
+def level_loads(values: list) -> Node or None:
     if not values:
         return None
     queue = Queue()
@@ -175,13 +175,13 @@ def level_loads(values: list) -> BinaryTree or None:
 
 
 def main():
-    root = BinaryTree(1)
-    root.left = BinaryTree(2)
-    root.right = BinaryTree(3)
-    root.left.left = BinaryTree(4)
-    root.left.right = BinaryTree(5)
-    root.right.left = BinaryTree(6)
-    root.right.right = BinaryTree(7)
+    root = Node(1)
+    root.left = Node(2)
+    root.right = Node(3)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    root.right.left = Node(6)
+    root.right.right = Node(7)
     # res = pre_dumps(root)
     # print(res)
     # values = res.split(',')

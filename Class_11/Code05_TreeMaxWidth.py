@@ -4,7 +4,7 @@
 from queue import Queue
 
 
-class BinaryTree(object):
+class Node(object):
     value: int
     left: None
     right: None
@@ -15,7 +15,7 @@ class BinaryTree(object):
         self.right = None
 
 
-def max_width_with_map(root: BinaryTree) -> int:
+def max_width_with_map(root: Node) -> int:
     """
     1、二叉树的按层遍历
     2、使用map记录每个节点所在的层数
@@ -49,7 +49,7 @@ def max_width_with_map(root: BinaryTree) -> int:
     return max_width
 
 
-def max_width_no_map(root: BinaryTree) -> int:
+def max_width_no_map(root: Node) -> int:
     """
     1、二叉树的按层遍历
     2、使用两个遍历记录当前层的结束节点和下一层的结束节点
@@ -81,13 +81,13 @@ def max_width_no_map(root: BinaryTree) -> int:
 
 
 def main():
-    root = BinaryTree(1)
-    root.left = BinaryTree(2)
-    root.right = BinaryTree(3)
-    root.left.left = BinaryTree(4)
-    root.left.right = BinaryTree(5)
-    root.right.left = BinaryTree(6)
-    root.right.right = BinaryTree(7)
+    root = Node(1)
+    root.left = Node(2)
+    root.right = Node(3)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    root.right.left = Node(6)
+    root.right.right = Node(7)
 
     res = max_width_with_map(root)
     print(res)

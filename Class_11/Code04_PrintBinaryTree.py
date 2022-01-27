@@ -3,7 +3,7 @@
 """
 
 
-class BinaryTree(object):
+class Node(object):
     value: int
     left: None
     right: None
@@ -19,7 +19,7 @@ def get_space(num: int):
     return space * num
 
 
-def print_mid_order(head: BinaryTree, height: int, to: str, length: int):
+def print_mid_order(head: Node, height: int, to: str, length: int):
     if head is None:
         return
     print_mid_order(head.right, height + 1, 'v', length)
@@ -32,20 +32,20 @@ def print_mid_order(head: BinaryTree, height: int, to: str, length: int):
     print_mid_order(head.left, height + 1, '^', length)
 
 
-def print_tree(head: BinaryTree):
+def print_tree(head: Node):
     print('Binary Tree:')
     print_mid_order(head, 0, 'H', 17)
     print()
 
 
 def main():
-    root = BinaryTree(1)
-    root.left = BinaryTree(2)
-    root.right = BinaryTree(3)
-    root.left.left = BinaryTree(4)
-    root.left.right = BinaryTree(5)
-    root.right.left = BinaryTree(6)
-    root.right.right = BinaryTree(7)
+    root = Node(1)
+    root.left = Node(2)
+    root.right = Node(3)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    root.right.left = Node(6)
+    root.right.right = Node(7)
     print_tree(root)
 
 
