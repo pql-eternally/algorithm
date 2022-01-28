@@ -58,7 +58,7 @@ def is_cbt1(head: Node) -> bool:
     return True
 
 
-class Info:
+class Info2:
     is_cbt: bool
     is_full: bool
     height: int
@@ -69,11 +69,11 @@ class Info:
         self.height = h
 
 
-def process(head: Node) -> Info:
+def process2(head: Node) -> Info2:
     if not head:
-        return Info(True, True, 0)
-    left_info = process(head.left)
-    right_info = process(head.right)
+        return Info2(True, True, 0)
+    left_info = process2(head.left)
+    right_info = process2(head.right)
     height = max(left_info.height, right_info.height) + 1
     is_full = left_info.is_full and right_info.is_full and left_info.height == right_info.height
     is_cbt = False
@@ -92,11 +92,11 @@ def process(head: Node) -> Info:
             # 左子树满，右子树不满，则高度差可能差1或者不差
             if left_info.is_full and not right_info.is_full and (0 <= left_info.height - right_info.height <= 1):
                 is_cbt = True
-    return Info(is_full, is_cbt, height)
+    return Info2(is_full, is_cbt, height)
 
 
 def is_cbt2(head: Node) -> bool:
-    return process(head).is_cbt
+    return process2(head).is_cbt
 
 
 def generate_random_binary_tree(max_level: int, max_value: int):

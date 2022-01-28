@@ -84,6 +84,13 @@ def process(head: Node) -> Info or None:
 
 
 def max_sub_bst_size(head: Node) -> int:
+    """
+    1、左子树是否搜索二叉树
+    2、右子树是否搜索二叉树
+    3、二叉搜索树节点数
+    4、最大值
+    5、最小值
+    """
     if head is None:
         return 0
     return process(head).max_size

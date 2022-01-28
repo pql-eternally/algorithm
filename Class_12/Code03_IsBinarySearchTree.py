@@ -75,6 +75,13 @@ def process(head: Node) -> Info or None:
 
 
 def is_bst1(head: Node) -> bool:
+    """
+    判断是否是搜索二叉树
+        1、左子树是搜索二叉树
+        2、右子树是搜索二叉树
+        3、左子树的最大值小于根节点值
+        4、右子树的最小值大于根节点值
+    """
     if not head:
         return True
     return process(head).is_bst

@@ -9,7 +9,7 @@
 判断是否是平衡二叉树
 1、左子树是平衡二叉树
 2、右子树是平衡二叉树
-3、左右子树的高度
+3、左右子树的高度差绝对值不能大于1
 
 class Info
     is_balance: bool
@@ -58,6 +58,12 @@ def process1(head: Node) -> Info:
 
 
 def is_bst1(head: Node) -> bool:
+    """
+    判断是否是平衡二叉树
+        1、左子树是平衡二叉树
+        2、右子树是平衡二叉树
+        3、左右子树的高度差绝对值不能大于1
+    """
     return process1(head).is_balance
 
 

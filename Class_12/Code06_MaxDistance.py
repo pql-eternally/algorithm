@@ -48,6 +48,12 @@ def process1(head: Node) -> Info:
 
 
 def max_distance1(head: Node) -> int:
+    """
+    1、左子树的最大距离
+    2、右子树的最大距离
+    3、当前节点作为最大距离的节点
+    4、当前节点不作为最大距离的节点
+    """
     return process1(head).max_distance
 
 

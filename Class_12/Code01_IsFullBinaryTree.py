@@ -45,15 +45,16 @@ def process(head: Node) -> Info:
     left_info = process(head.left)
     right_info = process(head.right)
     height = max(left_info.height, right_info.height) + 1
-    is_full = left_info.is_full and right_info.is_full
-    if is_full:
-        is_full = left_info.height == right_info.height
+    is_full = left_info.is_full and right_info.is_full and (left_info.height == right_info.height)
     return Info(is_full, height)
 
 
 def is_full_binary_tree(root: Node) -> bool:
     """
     判断是否是满二叉树
+    1、左子树是满二叉树
+    2、右子树是满二叉树
+    3、左子树高度等于右子树的高度
     """
     if not root:
         return True
