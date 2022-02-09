@@ -20,12 +20,12 @@ class DirectedGraphNode:
 
 
 class Record:
-    def __init__(self, node: DirectedGraphNode, deep: int):
+    def __init__(self, node: DirectedGraphNode, count: int):
         self.node = node
-        self.deep = deep
+        self.count = count
 
     def __lt__(self, other):
-        return self.deep > other.deep
+        return self.count > other.count
 
 
 class Solution:
@@ -34,36 +34,28 @@ class Solution:
     @return: Any topological order for the given graph.
     """
 
-    def gen_record(self, node: DirectedGraphNode, node_record_map: Dict[DirectedGraphNode, Record]) -> Record:
-        """
-        计算当前节点的深度，并放入到深度表中
-        @param node:
-        @param node_record_map:
-        @return:
-        """
+    def gen_record(self, node: DirectedGraphNode, node_record_map: Dict[DirectedGraphNode, Record]):
         if node in node_record_map:
             return node_record_map[node]
-        deep = 0
+        count = 0
         for cur in node.neighbors:
-            deep = max(deep, self.gen_record(cur, node_record_map).deep)
-        record = Record(node, deep + 1)
+            count += self.gen_record(cur, node_record_map).count
+        record = Record(node, count + 1)
         node_record_map[node] = record
         return record
 
     def topSort(self, graph):
         """
-        统计每个节点的深度，按照深度从小到大排序后，依次取出
+        统计从每个节点出发经过的所有节点的频次，按照节点频次从大到小排序后，依次取出
         """
-        node_record_map: Dict[DirectedGraphNode, Record] = {}
+        node_record_map = {}
         records = []
         for node in graph:
             record = self.gen_record(node, node_record_map)
             records.append(record)
-        # 按照Record深度从小到大排序
         records.sort()
         res = []
         for record in records:
-            print(record.deep, 'xxx')
             res.append(record.node)
         return res
 
@@ -74,12 +66,11 @@ def main():
     node2 = DirectedGraphNode(2)
     node3 = DirectedGraphNode(3)
     node4 = DirectedGraphNode(4)
-    node5 = DirectedGraphNode(5)
-    node3.neighbors = [node4, node5]
-    node2.neighbors = [node4, node5]
-    node1.neighbors = [node4]
-    node0.neighbors = [node1, node2, node3]
-    graph = [node0, node1, node2, node3, node4, node5]
+    node3.neighbors = [node4]
+    node2.neighbors = [node1, node4]
+    node1.neighbors = [node3, node4]
+    node0.neighbors = [node1, node2, node3, node4]
+    graph = [node0, node1, node2, node3, node4]
     s = Solution()
     res = s.topSort(graph)
     for node in res:
