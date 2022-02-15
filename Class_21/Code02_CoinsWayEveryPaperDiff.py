@@ -7,6 +7,11 @@ arr是货币数组，其中的值都是正数。再给定一个正数aim。
 第0个和第1个能组成2，第1个和第2个能组成2，第0个和第2个能组成2
 一共就3种方法，所以返回3
 """
+from typing import List
+
+
+class Solution:
+    pass
 
 
 def main():

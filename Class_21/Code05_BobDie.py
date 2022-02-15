@@ -5,6 +5,11 @@ Bob一共要迈出k步，且每步都会等概率向上下左右四个方向走�
 任何时候Bob只要离开N*M的区域，就直接死亡
 返回k步之后，Bob还在N*M的区域的概率
 """
+from typing import List
+
+
+class Solution:
+    pass
 
 
 def main():
