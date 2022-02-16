@@ -11,16 +11,43 @@ from typing import List
 
 class Solution:
     def kill(self, N: int, M: int, K: int):
-        pass
+        total = pow(M + 1, K)
+        live_count = self.process(N, M, K)
+        return 1 - live_count / total
+
+    def process(self, N: int, M: int, rest: int):
+        if N <= 0:
+            return 0
+        if rest == 0:
+            return 1
+        count = 0
+        for i in range(M + 1):
+            if i < N:
+                count += self.process(N - i, M, rest - 1)
+        return count
 
 
 class Solution2:
     def kill(self, N: int, M: int, K: int):
-        pass
+        row = N + 1
+        col = K + 1
+        dp = [[0] * col for _ in range(row)]
+        for x in range(row):
+            dp[x][0] = 1
+        for y in range(1, col):
+            for x in range(row):
+                count = 0
+                for i in range(M + 1):
+                    if i < x:
+                        count += dp[x - i][y - 1]
+                dp[x][y] = count
+        total = pow(M + 1, K)
+        live_count = dp[N][K]
+        return 1 - live_count / total
 
 
 def main():
-    N = 5
+    N = 10
     M = 5
     k = 5
     t1 = time.time()
