@@ -51,6 +51,12 @@ class Solution2:
         return dp[0][aim]
 
 
+class Solution3:
+    def min_coins(self, arr: List[int], aim: int):
+        # TODO:
+        pass
+
+
 def main():
     arr = [1, 2, 5, 10]
     aim = 223

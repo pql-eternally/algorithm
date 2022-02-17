@@ -6,22 +6,49 @@
 5种，所以返回5
 """
 import time
-from typing import List
 
 
 class Solution:
     def split_number(self, n: int):
-        return self.process(n, 1)
+        return self.process(1, n)
 
-    def process(self, rest: int, num: int):
+    def process(self, pre: int, rest: int):
         if rest == 0:
             return 1
-        self.process(rest, num)
-        self.process(rest, num + 1)
+        if pre > rest:
+            return 0
+        ways = 0
+        for i in range(pre, rest + 1):
+            ways += self.process(i, rest - i)
+        return ways
 
 
 class Solution2:
     def split_number(self, n: int):
+        """
+        dp
+        pre: 1 - n
+        rest: 0, n
+        可以准备 n * n 的二维数组
+        可以发现是斜对角方式进行填充或者是从底到上方式填充
+        """
+        N = n + 1
+        dp = [[0] * N for _ in range(N)]
+        # 填第0列
+        for pre in range(N):
+            dp[pre][0] = 1
+        for pre in range(N, 0, -1):
+            for rest in range(pre, N):
+                ways = 0
+                for i in range(pre, rest + 1):
+                    ways += dp[i][rest - i]
+                dp[pre][rest] = ways
+        return dp[1][n]
+
+
+class Solution3:
+    def split_number(self, n: int):
+        # TODO:
         pass
 
 

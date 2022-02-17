@@ -12,6 +12,7 @@ class Solution:
     """
     暴力递归
     """
+
     def kill(self, N: int, M: int, K: int):
         total = pow(M + 1, K)
         live_count = self.process(N, M, K)
@@ -32,6 +33,7 @@ class Solution2:
     """
     严格表结构依赖的dp
     """
+
     def kill(self, N: int, M: int, K: int):
         row = N + 1
         col = K + 1
@@ -47,6 +49,12 @@ class Solution2:
         total = pow(M + 1, K)
         live_count = dp[N][K]
         return 1 - live_count / total
+
+
+class Solution3:
+    def kill(self, N: int, M: int, K: int):
+        # TODO:
+        pass
 
 
 def main():
