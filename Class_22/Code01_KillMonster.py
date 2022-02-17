@@ -6,10 +6,12 @@
 求K次打击之后，英雄把怪兽砍死的概率
 """
 import time
-from typing import List
 
 
 class Solution:
+    """
+    暴力递归
+    """
     def kill(self, N: int, M: int, K: int):
         total = pow(M + 1, K)
         live_count = self.process(N, M, K)
@@ -21,13 +23,15 @@ class Solution:
         if rest == 0:
             return 1
         count = 0
-        for i in range(M + 1):
-            if i < N:
-                count += self.process(N - i, M, rest - 1)
+        for i in range(min(M + 1, N)):
+            count += self.process(N - i, M, rest - 1)
         return count
 
 
 class Solution2:
+    """
+    严格表结构依赖的dp
+    """
     def kill(self, N: int, M: int, K: int):
         row = N + 1
         col = K + 1
@@ -37,9 +41,8 @@ class Solution2:
         for y in range(1, col):
             for x in range(row):
                 count = 0
-                for i in range(M + 1):
-                    if i < x:
-                        count += dp[x - i][y - 1]
+                for i in range(min(M + 1, x)):
+                    count += dp[x - i][y - 1]
                 dp[x][y] = count
         total = pow(M + 1, K)
         live_count = dp[N][K]
@@ -47,9 +50,9 @@ class Solution2:
 
 
 def main():
-    N = 10
-    M = 5
-    k = 5
+    N = 3
+    M = 2
+    k = 2
     t1 = time.time()
     solution = Solution()
     res1 = solution.kill(N, M, k)

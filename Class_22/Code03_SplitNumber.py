@@ -11,7 +11,13 @@ from typing import List
 
 class Solution:
     def split_number(self, n: int):
-        pass
+        return self.process(n, 1)
+
+    def process(self, rest: int, num: int):
+        if rest == 0:
+            return 1
+        self.process(rest, num)
+        self.process(rest, num + 1)
 
 
 class Solution2:
