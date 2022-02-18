@@ -365,9 +365,9 @@ def wuhuan():
 
 
 def text():
-    turtle.goto(-10, -140)
-    turtle.pencolor("red")
-    turtle.write("米 多", font=('Arial', 20, 'bold italic'))
+    turtle.goto(-12, -140)
+    turtle.pencolor("blue")
+    turtle.write("无敌蓝胖子", font=('Arial', 15, 'bold italic'))
     turtle.goto(-16, -160)
     turtle.pencolor("black")
     turtle.write("BEIJING 2022", font=('Arial', 10, 'bold italic'))
@@ -376,7 +376,7 @@ def text():
 
 def main():
     # 速度
-    turtle.speed(100)
+    turtle.speed(20)
     # 左手
     body()
     # 爱心
