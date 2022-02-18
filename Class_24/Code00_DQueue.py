@@ -16,3 +16,5 @@ print(queue)
 
 queue.rotate()
 print(queue)
+print(queue[0])
+print(queue[-1])
