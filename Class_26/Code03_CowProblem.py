@@ -80,13 +80,13 @@ class Solution3:
 
     @staticmethod
     def matrix_multiply(m1: List[List[int]], m2: List[List[int]]):
-        return list(np.array(m1) * np.array(m2))
+        return np.dot(np.array(m1), np.array(m2))
 
 
 def main():
     s1 = Solution1()
     s2 = Solution2()
-    s3 = Solution2()
+    s3 = Solution3()
 
     n = 10
     res1 = s1.cow(n)

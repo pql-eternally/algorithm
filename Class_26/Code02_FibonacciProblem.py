@@ -122,7 +122,7 @@ class Solution5:
         """
         使用numpy进行二阶矩阵相乘
         """
-        return list(np.array(m1) * np.array(m2))
+        return np.dot(np.array(m1), np.array(m2))
 
 
 def test_matrix_multiply(m1: List[List[int]], m2: List[List[int]]):
@@ -134,9 +134,9 @@ def main():
     s2 = Solution2()
     s3 = Solution3()
     s4 = Solution4()
-    s5 = Solution4()
+    s5 = Solution5()
 
-    n = 3
+    n = 5
     t1 = time.time()
     res1 = s1.fib(n)
     t2 = time.time()
