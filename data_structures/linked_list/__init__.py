@@ -30,7 +30,7 @@ class LinkedList:
         self.head = Node(item, self.head)
         self.size += 1
 
-    def remove(self) -> Node:
+    def remove(self) -> Any:
         """
         移除链表头部元素
         """
@@ -75,11 +75,17 @@ class LinkedList:
         >>> linked_list.add("b")
         >>> len(linked_list)
         2
-        >>> _ = linked_list.remove()
+        >>> node = linked_list.remove()
+        >>> node
+        'b'
         >>> len(linked_list)
         1
-        >>> _ = linked_list.remove()
+        >>> node = linked_list.remove()
+        >>> node
+        'a'
         >>> len(linked_list)
         0
+        >>> node = linked_list.remove()
+        >>> node
         """
         return self.size
