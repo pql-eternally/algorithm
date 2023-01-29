@@ -5,7 +5,7 @@ Date : 2023/1/29 10:15
 单链表相关案例
 """
 from typing import Any, List
-from . import Node
+from data_structures.linked_list import Node
 
 
 class LinkedList:
