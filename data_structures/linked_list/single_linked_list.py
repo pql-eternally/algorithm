@@ -8,42 +8,20 @@ from typing import Any, List
 from data_structures.linked_list import Node
 
 
+class LinkedListEmptyError(Exception):
+    pass
+
+
 class LinkedList:
     def __init__(self):
         self.head: Node | None = None
+        self.tail: Node | None = None
         self.size = 0
-
-    def add(self, data: Any) -> None:
-        """
-        往链表头部添加元素
-        """
-        self.head = Node(data, self.head)
-        self.size += 1
-
-    def remove(self) -> Any:
-        """
-        移除链表头部元素
-        """
-        if self.is_empty():
-            return None
-        else:
-            data = self.head.data
-            self.head = self.head.next
-            self.size -= 1
-            return data
 
     def is_empty(self) -> bool:
         return self.head is None
 
     def __str__(self) -> str:
-        """
-        >>> linked_list = LinkedList()
-        >>> linked_list.add(1)
-        >>> linked_list.add(2)
-        >>> linked_list.add(3)
-        >>> print(linked_list)
-        3 --> 2 --> 1
-        """
         if self.is_empty():
             return ""
 
@@ -55,27 +33,90 @@ class LinkedList:
         return " --> ".join(item_list)
 
     def __len__(self) -> int:
-        """
-        >>> linked_list = LinkedList()
-        >>> len(linked_list)
-        0
-        >>> linked_list.add("a")
-        >>> len(linked_list)
-        1
-        >>> linked_list.add("b")
-        >>> len(linked_list)
-        2
-        >>> node = linked_list.remove()
-        >>> node
-        'b'
-        >>> len(linked_list)
-        1
-        >>> node = linked_list.remove()
-        >>> node
-        'a'
-        >>> len(linked_list)
-        0
-        >>> node = linked_list.remove()
-        >>> node
-        """
         return self.size
+
+    def insert_tail(self, data: Any) -> None:
+        """
+        从链表尾部插入数据
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_tail(1)
+        >>> linked_list.insert_tail(2)
+        >>> linked_list.insert_tail(3)
+        >>> print(linked_list)
+        1 --> 2 --> 3
+        """
+        node = Node(data)
+        if self.is_empty():
+            self.head = self.tail = node
+            return
+
+        self.tail.next = node
+        self.tail = node
+        self.size += 1
+
+    def insert_head(self, data: Any) -> None:
+        """
+        从链表头部插入数据
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_head(1)
+        >>> linked_list.insert_head(2)
+        >>> linked_list.insert_head(3)
+        >>> print(linked_list)
+        3 --> 2 --> 1
+        """
+        if self.is_empty():
+            self.head = self.tail = Node(data)
+            return
+        self.head = Node(data, self.head)
+        self.size += 1
+
+    def delete_tail(self) -> Any:
+        """
+        从链表尾部删除数据
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_tail(1)
+        >>> linked_list.insert_tail(2)
+        >>> linked_list.insert_tail(3)
+        >>> print(linked_list.delete_tail())
+        3
+        >>> print(linked_list.delete_tail())
+        2
+        """
+        if self.is_empty():
+            raise LinkedListEmptyError
+
+        delete_node = self.tail
+        current_node = self.head
+        while current_node:
+            if current_node.next == delete_node:
+                self.tail = current_node
+                current_node.next = None
+                break
+            current_node = current_node.next
+        data = delete_node.data
+        del delete_node
+        self.size -= 1
+        return data
+
+    def delete_head(self) -> Any:
+        """
+        从链表头部删除数据
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_tail(1)
+        >>> linked_list.insert_tail(2)
+        >>> linked_list.insert_tail(3)
+        >>> print(linked_list.delete_head())
+        1
+        """
+        if self.is_empty():
+            raise LinkedListEmptyError
+        delete_node = self.head
+        new_head = self.head.next
+        if new_head is None:
+            self.head = self.tail = None
+        else:
+            self.head = new_head
+        data = delete_node.data
+        del delete_node
+        self.size -= 1
+        return data
