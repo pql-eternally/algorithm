@@ -11,7 +11,7 @@ from data_structures.linked_list.make_linkedlist_from_sequence import make_linke
 def reverse_linked_list(head: Node) -> Node:
     """
     反转单链表
-    >>> linked_list = make_linked_list(range(1, 6))
+    >>> linked_list = make_linked_list([1, 2, 3, 4, 5])
     >>> print(reverse_linked_list(linked_list))
     5 --> 4 --> 3 --> 2 --> 1
     """
@@ -25,10 +25,10 @@ def reverse_linked_list(head: Node) -> Node:
     return pre_node
 
 
-def print_reverse(head: Node) -> str:
+def print_reverse(head: Node) -> None:
     """
     反转输出单链表
-    >>> linked_list = make_linked_list(range(1, 6))
+    >>> linked_list = make_linked_list([1, 2, 3, 4, 5])
     >>> print_reverse(linked_list)
     5
     4
@@ -37,9 +37,4 @@ def print_reverse(head: Node) -> str:
     1
     """
     print_reverse(head.next)
-    print(head.data)
-
-
-if __name__ == '__main__':
-    linked_list = make_linked_list(range(1, 6))
-    print_reverse(linked_list)
+    print(str(head.data))

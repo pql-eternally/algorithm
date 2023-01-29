@@ -11,8 +11,7 @@ from data_structures.linked_list import Node
 def make_linked_list(data: List[Any]):
     """
     列表生成单链表
-    >>> list_data = range(1, 6)
-    >>> head_node = make_linked_list(list_data)
+    >>> head_node = make_linked_list([1, 2, 3, 4, 5])
     >>> print(head_node)
     1 --> 2 --> 3 --> 4 --> 5
     """
