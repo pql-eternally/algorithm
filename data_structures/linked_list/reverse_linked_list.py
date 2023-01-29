@@ -5,7 +5,7 @@ Date : 2023/1/29 11:06
 反转单链表
 """
 from data_structures.linked_list import Node
-from data_structures.linked_list.make_linkedlist_from_sequence import make_linked_list
+from data_structures.linked_list.make_linked_list import make_linked_list
 
 
 def reverse_linked_list(head: Node) -> Node:
