@@ -36,8 +36,6 @@ def print_reverse(head: Node) -> str:
     2
     1
     """
-    if not head:
-        return ""
     print_reverse(head.next)
     print(head.data)
 
