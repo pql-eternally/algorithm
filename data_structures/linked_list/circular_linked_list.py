@@ -3,6 +3,7 @@
 """
 from typing import Any
 from data_structures.linked_list import Node
+from data_structures.linked_list.make_linked_list import make_linked_list
 
 
 class LinkedListEmptyError(Exception):
@@ -126,3 +127,31 @@ class CircularLinkedList:
             self.tail.next = self.head
         self.size -= 1
         return delete_node.data
+
+
+class ContainsLoopError(Exception):
+    pass
+
+
+def has_loop(head: Node) -> bool:
+    """
+    判断链表是否有环
+    >>> linked_list = CircularLinkedList()
+    >>> linked_list.insert_tail(1)
+    >>> linked_list.insert_tail(2)
+    >>> linked_list.insert_tail(3)
+    >>> head_node = linked_list.head
+    >>> print(has_loop(head_node))
+    True
+    >>> head_node = make_linked_list([1, 2, 3])
+    >>> print(has_loop(head_node))
+    False
+    """
+    visited = []
+    node = head
+    while node:
+        if node in visited:
+            return True
+        visited.append(node)
+        node = node.next
+    return False
