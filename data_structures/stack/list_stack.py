@@ -94,7 +94,19 @@ class Stack(Generic[T]):
         return iter(self.stack)
 
     def __next__(self) -> T:
-        return next(self.stack)
+        """
+        >>> stack = Stack()
+        >>> stack.push("A")
+        >>> stack.push("B")
+        >>> stack.push("C")
+        >>> next(stack)
+        'C'
+        >>> next(stack)
+        'B'
+        >>> next(stack)
+        'A'
+        """
+        return self.pop()
 
     def __getitem__(self, index: int) -> T:
         return self.stack[index]
