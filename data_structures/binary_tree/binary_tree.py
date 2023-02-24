@@ -76,3 +76,16 @@ def is_full_binary_tree(tree: Node | None) -> bool:
     if tree.left and tree.right:
         return is_full_binary_tree(tree.left) and is_full_binary_tree(tree.right)
     return not tree.left and not tree.right
+
+
+def main():
+    root = Node(1)
+    root.left = Node(2)
+    root.right = Node(3)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    print(depth_of_tree(root))
+
+
+if __name__ == '__main__':
+    main()
