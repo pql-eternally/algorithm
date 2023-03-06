@@ -4,9 +4,10 @@ from bson import ObjectId
 from datetime import datetime
 
 from qcore.model.base import BaseModel
+from qcore.model.mixins import LockableMixin
 
 
-class Account(BaseModel):
+class Account(BaseModel, LockableMixin):
     """账户
     """
     logger = logging.getLogger(__name__)

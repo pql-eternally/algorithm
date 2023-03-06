@@ -31,3 +31,11 @@ class FindTestCase(unittest.TestCase):
         print(records)
         cnt = records.count()
         print(cnt)
+
+    def test_count(self):
+        spec = {
+            'name': '李四',
+        }
+        cnt = db.Account.count(spec)
+        print(cnt)
+        assert cnt

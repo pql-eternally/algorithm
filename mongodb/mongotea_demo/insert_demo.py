@@ -52,3 +52,22 @@ class InsertTestCase(unittest.TestCase):
         record['name'] = '李四'
         record.save(session=session)
         monitor_exception()
+
+    def test_apply_form_save(self):
+        record = db.Account()
+        form_data = {
+            'name': '张三',
+            'age': 18,
+        }
+        record.apply_form_save(form=form_data)
+        print(record)
+        assert record
+
+    def test_apply_form_update_set(self):
+        record = db.Account.get_from_oid('6405774e50d433b679b7952f')
+        form_data = {
+            'name': '李四',
+        }
+        record.apply_form_update_set(form_data)
+        record.reload()
+        assert record['name'] == '李四'
