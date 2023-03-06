@@ -1,5 +1,4 @@
 import trio
-import time
 
 from tracer import Tracer
 
