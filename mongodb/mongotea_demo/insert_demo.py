@@ -1,6 +1,7 @@
 import fire
 import os
 import sys
+import unittest
 
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(_ROOT)
@@ -14,10 +15,19 @@ bootstrap_mongo()
 from mongodb.globals import db, conn
 
 
-class MongoTeaCli:
+class InsertTestCase(unittest.TestCase):
 
     @transactional(conn)
-    def do_insert_transaction(self, session):
+    def test_insert(self, session):
+        record = db.Account()
+        doc = {
+            'name': '王五',
+        }
+        record.update(doc)
+        record.insert(session=session)
+
+    @transactional(conn)
+    def test_save(self, session):
         record = db.Account()
         record['name'] = '张三'
         record.save(session=session)
@@ -43,7 +53,3 @@ class MongoTeaCli:
         record['name'] = '李四'
         record.save(session=session)
         monitor_exception()
-
-
-if __name__ == '__main__':
-    fire.Fire(MongoTeaCli)
