@@ -75,3 +75,11 @@ class UpdateTestCase(unittest.TestCase):
         record.update_inc_field(field='age', value=-2)
         record.reload()
         assert record['age'] == age - 2
+
+    @transactional(conn)
+    def test_add_to_set(self, session=None):
+        record = db.Account.get_from_oid('6401cba03b666a794e1b1b47')
+        record.add_to_set(field='hobbies', value='basketball')
+        record.add_to_set(field='hobbies', value=['a', 'b', 'c'], each=True)
+        res = record.pull_from_set(field='hobbies', value='b')
+        assert res
