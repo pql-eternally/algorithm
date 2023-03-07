@@ -31,5 +31,5 @@ async def parent():
     print("parent: all done!")
 
 
-# trio.run(parent)
-trio.run(parent, instruments=[Tracer()])
+trio.run(parent)
+# trio.run(parent, instruments=[Tracer()])
