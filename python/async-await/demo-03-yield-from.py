@@ -14,3 +14,8 @@ def lazy_range(up_to):
             index += 1
 
     yield from gratuitous_refactor()
+
+
+if __name__ == '__main__':
+    for x in lazy_range(5):
+        print(x)  # 0, 1, 2, 3, 4

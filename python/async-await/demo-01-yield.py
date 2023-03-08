@@ -9,3 +9,8 @@ def lazy_range(up_to):
     while index < up_to:
         yield index
         index += 1
+
+
+if __name__ == '__main__':
+    for x in lazy_range(5):
+        print(x)  # 0, 1, 2, 3, 4
