@@ -46,5 +46,8 @@ if __name__ == '__main__':
     # 查看对象的被引用关系图
     func_show_backrefs()
 
-    # objgraph.show_most_common_types()
+    # 输出最常见实例的类型
+    objgraph.show_most_common_types()
+
+    # 查看对象的增长情况
     func_show_growth()
