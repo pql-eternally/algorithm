@@ -6,23 +6,20 @@ objgraph is a Python module for creating object diagrams of Python programs.
 
 import objgraph
 
+a = [1, 2, 3]
+b = [4, 5, 6]
+a.append(b)
+b.append(a)
+
 
 def func_show_refs():
-    a = [1, 2, 3]
-    b = [4, 5, 6]
-    a.append(b)
-    b.append(a)
     # 查看对象的引用关系图
-    objgraph.show_refs([a, b], filename='objgraph_show_refs.png')
+    objgraph.show_refs([a], filename='objgraph_show_refs.png')
 
 
 def func_show_backrefs():
-    a = [1, 2, 3]
-    b = [4, 5, 6]
-    a.append(b)
-    b.append(a)
     # 查看对象的被引用关系图
-    objgraph.show_backrefs([a, b], filename='objgraph_show_backrefs.png')
+    objgraph.show_backrefs([b], filename='objgraph_show_backrefs.png')
 
 
 def func_show_growth():
@@ -44,10 +41,10 @@ def func_show_growth():
 
 if __name__ == '__main__':
     # 查看对象的引用关系图
-    # func_show_refs()
+    func_show_refs()
 
     # 查看对象的被引用关系图
-    # func_show_backrefs()
+    func_show_backrefs()
 
     # objgraph.show_most_common_types()
     func_show_growth()
