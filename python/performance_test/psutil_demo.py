@@ -79,9 +79,9 @@ def profile_func(run_count: int = 1):
 
 def main():
     test_count = 2
-    profile_func(test_count)(sum_iterator)
-    print("-" * 50)
-    gc.freeze()
+    # profile_func(test_count)(sum_iterator)
+    # print("-" * 50)
+    # gc.freeze()
     profile_func(test_count)(sum_generator)
 
 

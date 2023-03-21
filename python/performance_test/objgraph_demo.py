@@ -14,12 +14,12 @@ b.append(a)
 
 def func_show_refs():
     # 查看对象的引用关系图
-    objgraph.show_refs([a], filename='objgraph_show_refs.png')
+    objgraph.show_refs([a, b], filename='objgraph_show_refs.png')
 
 
 def func_show_backrefs():
     # 查看对象的被引用关系图
-    objgraph.show_backrefs([b], filename='objgraph_show_backrefs.png')
+    objgraph.show_backrefs([a, b], filename='objgraph_show_backrefs.png')
 
 
 def func_show_growth():

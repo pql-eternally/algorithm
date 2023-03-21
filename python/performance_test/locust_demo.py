@@ -9,8 +9,8 @@ locust -u 200 -r 20 -t 1m -f locust_demo.py
 -t: 指定运行时间（格式：1m，1h）
 -f: 指定脚本文件
 
-flask api test: locust --host=http://localhost:5000 -u 200 -r 20 -t 1m -f locust_demo.py
-fastapi api test: locust --host=http://localhost:8000  -u 200 -r 20 -t 1m -f locust_demo.py
+flask api test: locust --host=http://127.0.0.1:5000 -u 200 -r 20 -t 1m -f locust_demo.py
+fastapi api test: locust --host=http://127.0.0.1:8000  -u 200 -r 20 -t 1m -f locust_demo.py
 """
 from locust import HttpUser, TaskSet, task, between
 
@@ -19,17 +19,23 @@ class WebsiteTasks(TaskSet):
     def on_start(self):
         pass
 
-    @task
-    def index(self):
-        self.client.get("/")
+    # @task
+    # def index(self):
+    #     self.client.get("/")
 
     @task
     def sleep(self):
         self.client.get("/sleep")
 
+    # @task
+    # def cpu_bound(self):
+    #     self.client.get("/cpu-bound")
+    #
+    # @task
+    # def io_bound(self):
+    #     self.client.get("/io-bound")
+
 
 class WebsiteUser(HttpUser):
-    wait_time = between(5, 9)
-    # flask host
-    # host = "http://127.0.0.1:5000"
+    wait_time = between(5, 10)
     tasks = [WebsiteTasks]
