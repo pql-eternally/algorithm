@@ -11,19 +11,20 @@ bootstrap_mongo()
 
 from mongodb.globals import db
 from mongodb.utils import profile_measure
-print(db)
+
 
 class PyMongoCli:
 
     @profile_measure()
     def do_find(self):
-        records = db.account.find({})
-        print(records.count())
+        record = db.account.find_one({'_id': '6405913d8d03ebec148a9746'})
+        print(record)
 
     @profile_measure()
     def do_mongotea_find(self):
-        records = db.Account.find({})
-        print(records.count())
+        record = db.Account.get_from_oid('6405913d8d03ebec148a9746')
+        # operator_info = record.operator_info
+        print(record)
 
 
 if __name__ == '__main__':
