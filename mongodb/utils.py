@@ -18,6 +18,7 @@ def profile_measure(sort: str = 'time', mount: int = 10):
             pr.enable()
             res = f(*args, **kwargs)
             pr.disable()
+            print(pr)
             pstats.Stats(pr).sort_stats(sort).print_stats(mount)
             return res
 

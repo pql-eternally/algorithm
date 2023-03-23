@@ -67,7 +67,7 @@ class Account(BaseModel, LockableMixin):
     }
     ref_fields = {
         # Account-ref_fields
-
+        'operator_info': ['operator_id', 'Account'],
         # Account-ref_fields
     }
     callback_fields = {
