@@ -31,6 +31,9 @@ class Account(BaseModel, LockableMixin):
         # 手机号
         'phone': str,
 
+        # 年龄
+        'age': int,
+
         # 业务唯一索引
         'index': str,
 
@@ -74,9 +77,11 @@ class Account(BaseModel, LockableMixin):
     ref_fields = {
         # Account-ref_fields
         'franchisee_info': ['franchisee_id', 'Franchisee'],
+        'operator_info': ['operator_id', 'Account'],
         # Account-ref_fields
     }
     callback_fields = {
+
     }
 
     default_values = {
@@ -87,6 +92,6 @@ class Account(BaseModel, LockableMixin):
         'updated_at': datetime.utcnow,
         # Account-default_values
     }
-    required_fields = ['_id', 'name', 'phone', 'franchisee_id', 'account_type', 'state', 'created_at', 'updated_at']
+    required_fields = ['_id', 'name']
 
     validators = {}
