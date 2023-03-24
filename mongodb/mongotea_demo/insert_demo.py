@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 import unittest
 
@@ -18,12 +19,20 @@ class InsertTestCase(unittest.TestCase):
 
     @transactional(conn)
     def test_insert(self, session):
-        record = db.Account()
-        doc = {
-            'name': '王五',
-        }
-        record.update(doc)
-        record.insert(session=session)
+        account_ids = [record['_id'] for record in db.Account.find({})]
+        franchisee_ids = [record['_id'] for record in db.Franchisee.find({})]
+
+        for i in range(100):
+            record = db.Account()
+            doc = {
+                'name': str(random.random()),
+                'age': random.randint(1, 100),
+                'franchisee_id': random.choice(franchisee_ids),
+                'creator_id': random.choice(account_ids),
+                'operator_id': random.choice(account_ids),
+            }
+            record.update(doc)
+            record.insert(session=session)
 
     @transactional(conn)
     def test_save(self, session):

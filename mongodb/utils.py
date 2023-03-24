@@ -18,8 +18,23 @@ def profile_measure(sort: str = 'time', mount: int = 10):
             pr.enable()
             res = f(*args, **kwargs)
             pr.disable()
-            print(pr)
-            pstats.Stats(pr).sort_stats(sort).print_stats(mount)
+            pstats.Stats(pr).strip_dirs().sort_stats(sort).print_stats(mount)
+            return res
+
+        return decorated
+
+    return wrapper
+
+
+def async_profile_measure(sort: str = 'time', mount: int = 10):
+    def wrapper(f):
+        @wraps(f)
+        async def decorated(*args, **kwargs):
+            pr = cProfile.Profile()
+            pr.enable()
+            res = await f(*args, **kwargs)
+            pr.disable()
+            pstats.Stats(pr).strip_dirs().sort_stats(sort).print_stats(mount)
             return res
 
         return decorated

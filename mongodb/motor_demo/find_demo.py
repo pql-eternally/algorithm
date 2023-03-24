@@ -1,8 +1,15 @@
+import os
+import sys
 import motor
 import pprint
 
-from mongodb import mongo_uri
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(_ROOT)
+
+from bson import ObjectId
 from tornado.ioloop import IOLoop
+from mongodb import mongo_uri
+from mongodb.utils import async_profile_measure
 
 client = motor.motor_tornado.MotorClient(mongo_uri)
 db = client.test
@@ -21,5 +28,20 @@ async def do_find2():
         pprint.pprint(document)
 
 
+@async_profile_measure()
+async def do_motor_find():
+    record = await db.account.find_one({'_id': ObjectId('641d013c52ecce87f5ecd0f5')})
+    # operator_info = record.operator_info
+    print(record)
+
+
+@async_profile_measure()
+async def do_motor_multi_find():
+    async for record in db.account.find({}):
+        record = await db.account.find_one({'_id': record['_id']})
+        # operator_info = record.operator_info
+
+
 # IOLoop.current().run_sync(do_find)
-IOLoop.current().run_sync(do_find2)
+# IOLoop.current().run_sync(do_motor_find)
+IOLoop.current().run_sync(do_motor_multi_find)

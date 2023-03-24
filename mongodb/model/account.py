@@ -77,7 +77,7 @@ class Account(BaseModel, LockableMixin):
     ref_fields = {
         # Account-ref_fields
         'franchisee_info': ['franchisee_id', 'Franchisee'],
-        'operator_info': ['operator_id', 'Account'],
+        # 'operator_info': ['operator_id', 'Account'],
         # Account-ref_fields
     }
     callback_fields = {
@@ -95,3 +95,10 @@ class Account(BaseModel, LockableMixin):
     required_fields = ['_id', 'name']
 
     validators = {}
+
+    @property
+    def operator_info(self):
+        operator_id = self.get('operator_id')
+        if not operator_id:
+            return None
+        return self.db.Account.get_from_oid(operator_id)
