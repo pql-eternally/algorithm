@@ -1,0 +1,31 @@
+$id: person.json
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  Pet:
+    properties:
+      age:
+        type: integer
+      name:
+        type: string
+properties:
+  age:
+    description: Age in years.
+    minimum: 0
+    type: integer
+  comment:
+    type: 'null'
+  first_name:
+    description: The person's first name.
+    type: string
+  last_name:
+    description: The person's last name.
+    type: string
+  pets:
+    items:
+    - $ref: '#/definitions/Pet'
+    type: array
+required:
+- first_name
+- last_name
+title: Person
+type: object
