@@ -30,12 +30,13 @@ deque_doubly：双端队列
 其它：
 skip_list：跳表，参考自 https://epaperpress.com/sortsearch/download/skiplist.pdf
 """
+from __future__ import annotations
 from typing import Any, List
 
 
 class Node:
 
-    def __init__(self, data: Any, next: Any = None) -> None:
+    def __init__(self, data: Any, next: Node = None) -> None:
         self.data = data
         self.next = next
 
