@@ -28,6 +28,7 @@ def change_list(data: List):
                 data[index] = inc(value)
             elif isinstance(value, list):
                 data[index] = append_list(value)
+    print(id(data))
     return data
 
 
