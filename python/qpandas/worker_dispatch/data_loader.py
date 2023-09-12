@@ -9,7 +9,7 @@ db = client['aoao-plus']
 qcode_db = client['boss-qcode']
 
 
-class OrderLoader(object):
+class DataLoader(object):
 
     @property
     def city_map(self):
@@ -47,6 +47,29 @@ class OrderLoader(object):
     def export_city_order(self, city_code=None, start_date=None, end_date=None):
         """
         按城市导出订单数据
+        包含字段：
+            shipping_date: 配送日期
+            city_code: 城市编码
+            city_name: 城市名称
+            store_id: 门店ID
+            store_name: 门店名称
+            operator_id: 用户ID
+            operator_name: 用户姓名
+            order_id: 订单ID
+            seller_order_id: 商家订单ID
+            distance: 配送距离
+            consignee_poi_lon: 收货地址经度
+            consignee_poi_lat: 收货地址纬度
+            consignor_poi_lon: 发货地址经度
+            consignor_poi_lat: 发货地址纬度
+            state: 订单状态
+            is_timeout: 是否超时
+            created_at: 下单时间
+            confirmed_at: 确认时间
+            accepted_at: 接单时间
+            arrived_at: 到店时间
+            pickup_at: 取货时间
+            done_at: 送达时间
         """
 
         def _process_records(records):
@@ -58,6 +81,16 @@ class OrderLoader(object):
                 delivery_info = record['delivery_info']
                 store_id = record['store_id']
                 operator_id = record['operator_id']
+
+                try:
+                    consignee_poi_lon, consignee_poi_lat = seller_order_record['consignee_info']['poi']
+                except ValueError:
+                    consignee_poi_lon, consignee_poi_lat = 0, 0
+                try:
+                    consignor_poi_lon, consignor_poi_lat = seller_order_record['consignor_info']['poi']
+                except ValueError:
+                    consignor_poi_lon, consignor_poi_lat = 0, 0
+
                 row = {
                     'shipping_date': record['shipping_date'],  # 配送日期
                     'city_code': record['city_code'],
@@ -69,8 +102,10 @@ class OrderLoader(object):
                     'order_id': record['_id'],  # 订单ID
                     'seller_order_id': seller_order_id,  # 商家订单ID
                     'distance': seller_order_record['distance'],  # 配送距离
-                    'consignee_poi': seller_order_record['consignee_info']['poi'],  # 收货地址坐标
-                    'consignor_poi': seller_order_record['consignor_info']['poi'],  # 发货地址坐标
+                    'consignee_poi_lon': consignee_poi_lon,  # 收货地址经度
+                    'consignee_poi_lat': consignee_poi_lat,  # 收货地址纬度
+                    'consignor_poi_lon': consignor_poi_lon,  # 发货地址经度
+                    'consignor_poi_lat': consignor_poi_lat,  # 发货地址纬度
                     'state': record['state'],
                     'is_timeout': record['is_timeout'],  # 是否超时
                     'created_at': datetime_utils.to_prc(record['created_at']),  # 下单时间
@@ -107,8 +142,40 @@ class OrderLoader(object):
             return
         file_path = f'../data/{city_name}<{start_date}-{end_date}>订单.csv'
         df.to_csv(file_path, index=False)
-        print(f'Total {df.index.size} records exported to {file_path} done.')
+        print(f'Total {df.index.size} order records exported to {file_path} done.')
+
+    def export_store(self):
+        """
+        导出门店数据，包含门店 ID、名称、坐标、创建时间
+        """
+
+        def _process_records(records):
+            for record in records:
+                try:
+                    lon, lat = record['poi']
+                except ValueError:
+                    lon, lat = None, None
+
+                row = {
+                    'store_id': record['_id'],
+                    'store_name': record['name'],
+                    'store_poi_lon': lon,
+                    'store_poi_lat': lat,
+                    'created_at': datetime_utils.to_prc(record['created_at']),
+                }
+                yield row
+
+        spec = {}
+        records = db['seller.store'].find(spec)
+        df = pd.DataFrame(_process_records(records))
+        count = df.index.size
+        if count == 0:
+            print('No records found.')
+            return
+        file_path = f'../data/门店数据.csv'
+        df.to_csv(file_path, index=False)
+        print(f'Total {df.index.size} store records exported to {file_path} done.')
 
 
 if __name__ == '__main__':
-    fire.Fire(OrderLoader)
+    fire.Fire(DataLoader)
