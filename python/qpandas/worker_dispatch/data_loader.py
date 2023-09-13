@@ -183,6 +183,79 @@ class DataLoader(object):
         df.to_csv(file_path, index=False)
         print(f'Total {df.index.size} store records exported to {file_path} done.')
 
+    def download_weather_data(self, city):
+        """
+        下载逐小时天气数据
+        """
+
+        import re
+        import requests
+        from io import StringIO
+
+        def compute_wind_speed(text):
+            """
+            匹配风速
+            """
+            pattern = re.compile(r'(\d+)')
+            match = pattern.findall(text)
+            if match:
+                return sum(map(int, match)) / len(match)
+            return 0
+
+        def compute_weather_level(text):
+            levels = ''
+            values = text.split('/')
+            for value in values:
+                value = value.strip()
+                if value not in weather_categories:
+                    print(value)
+                    level = '00'
+                else:
+                    level = weather_categories[value]
+                levels += level
+            return levels
+
+        dfs = []
+        for month in range(202307, 202310):
+            url = f'http://www.tianqihoubao.com/lishi/{city}/month/{month}.html'
+            response = requests.get(url)
+            response.encoding = 'gb2312'
+            month_df = pd.read_html(StringIO(response.text))[0]
+            # 设置第1行为表头，并删除第1行
+            month_df.columns = month_df.iloc[0]
+            month_df = month_df.drop(0)
+            dfs.append(month_df)
+        df = pd.concat(dfs, ignore_index=True)
+        # 最低气温/最高气温 表头扁平化
+        df['最高温度'] = df['最低气温/最高气温'].apply(lambda x: x.split('/')[0].replace('℃', '').strip())
+        df['最低温度'] = df['最低气温/最高气温'].apply(lambda x: x.split('/')[1].replace('℃', '').strip())
+        df.drop(columns=['最低气温/最高气温'], inplace=True)
+        # 风力风向(夜间/白天) 表头扁平化
+        df['风力'] = df['风力风向(夜间/白天)'].apply(lambda x: compute_wind_speed(x))
+        # 天气转换，将中雨~小雨、多云~晴、多云~小雨等转换为可分析预测的特征
+        # 获取所有可能的天气描述类别
+        weather_categories = {
+            '晴': '01',
+            '多云': '02',
+            '阴': '03',
+            '小雨': '11',
+            '中雨': '12',
+            '大雨': '13',
+            '暴雨': '14',
+            '大暴雨': '15',
+            '大到暴雨': '16',
+            '雷阵雨': '17',
+            '阵雨': '18',
+            '雨夹雪': '19',
+            '小雪': '21',
+            '中雪': '22',
+            '大雪': '23',
+            '暴雪': '24',
+        }
+        df['天气'] = df['天气状况'].apply(lambda x: compute_weather_level(x))
+        df.to_csv(f'../data/{city}天气数据.csv', index=False)
+        print('Weather data downloaded.')
+
 
 if __name__ == '__main__':
     fire.Fire(DataLoader)
