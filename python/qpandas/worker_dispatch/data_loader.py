@@ -46,7 +46,7 @@ class DataLoader(object):
             account_map[record['_id']] = record['name']
         return account_map
 
-    def export_city_order(self, start_date=None, end_date=None, city_code=None, city_name=None, file_path='/tmp'):
+    def export_order(self, start_date=None, end_date=None, city_code=None, city_name=None, file_path='/tmp'):
         """
         按城市导出订单数据
         包含字段：
