@@ -44,7 +44,7 @@ class DataLoader(object):
             account_map[record['_id']] = record['name']
         return account_map
 
-    def export_city_order(self, city_code=None, start_date=None, end_date=None):
+    def export_city_order(self, city_code=None, start_date=None, end_date=None, city_name=None):
         """
         按城市导出订单数据
         包含字段：
@@ -124,6 +124,8 @@ class DataLoader(object):
             city_code = str(city_code)
             spec['city_code'] = str(city_code)
             city_name = self.city_map.get(city_code)
+        elif city_name:
+            spec['city_name'] = city_name
         else:
             city_name = '全部城市'
 
