@@ -203,17 +203,17 @@ class DataLoader(object):
             return 0
 
         def compute_weather_level(text):
-            levels = ''
+            levels = []
             values = text.split('/')
             for value in values:
                 value = value.strip()
                 if value not in weather_categories:
-                    print(value)
-                    level = '00'
+                    print(f'Missing weather cate: {value}')
+                    level = 0
                 else:
                     level = weather_categories[value]
-                levels += level
-            return levels
+                levels.append(level)
+            return max(levels)
 
         dfs = []
         for month in range(202307, 202310):
@@ -235,25 +235,30 @@ class DataLoader(object):
         # 天气转换，将中雨~小雨、多云~晴、多云~小雨等转换为可分析预测的特征
         # 获取所有可能的天气描述类别
         weather_categories = {
-            '晴': '01',
-            '多云': '02',
-            '阴': '03',
-            '小雨': '11',
-            '中雨': '12',
-            '大雨': '13',
-            '暴雨': '14',
-            '大暴雨': '15',
-            '大到暴雨': '16',
-            '雷阵雨': '17',
-            '阵雨': '18',
-            '雨夹雪': '19',
-            '小雪': '21',
-            '中雪': '22',
-            '大雪': '23',
-            '暴雪': '24',
+            '晴': 11,
+            '多云': 12,
+            '阴': 13,
+            '小雨': 21,
+            '雷阵雨': 22,
+            '阵雨': 23,
+            '中雨': 24,
+            '大雨': 25,
+            '暴雨': 26,
+            '大暴雨': 27,
+            '大到暴雨': 27,
+            '小雪': 31,
+            '中雪': 32,
+            '大雪': 33,
+            '暴雪': 34,
         }
         df['天气'] = df['天气状况'].apply(lambda x: compute_weather_level(x))
-        df.to_csv(f'../data/{city}天气数据.csv', index=False)
+        city_name = {
+            'beijing': '北京',
+            'shanghai': '上海',
+            'guangzhou': '广州',
+            'shenzhen': '深圳',
+        }
+        df.to_csv(f'../data/{city_name.get(city)}天气数据.csv', index=False)
         print('Weather data downloaded.')
 
 
