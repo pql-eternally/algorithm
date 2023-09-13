@@ -1,9 +1,11 @@
+import os
 import fire
 import pandas as pd
 
 from pymongo import MongoClient
 from yoda import datetime as datetime_utils
 
+# FIXME: 修改为线上数据库
 client = MongoClient('192.168.10.134', 27003)
 db = client['aoao-plus']
 qcode_db = client['boss-qcode']
@@ -44,7 +46,7 @@ class DataLoader(object):
             account_map[record['_id']] = record['name']
         return account_map
 
-    def export_city_order(self, city_code=None, start_date=None, end_date=None, city_name=None):
+    def export_city_order(self, start_date=None, end_date=None, city_code=None, city_name=None, file_path='/tmp'):
         """
         按城市导出订单数据
         包含字段：
@@ -122,7 +124,7 @@ class DataLoader(object):
         }
         if city_code:
             city_code = str(city_code)
-            spec['city_code'] = str(city_code)
+            spec['city_code'] = city_code
             city_name = self.city_map.get(city_code)
         elif city_name:
             spec['city_name'] = city_name
@@ -142,11 +144,13 @@ class DataLoader(object):
         if count == 0:
             print('No records found.')
             return
-        file_path = f'../data/{city_name}<{start_date}-{end_date}>订单.csv'
+        current_day = datetime_utils.prcnow().format('YYYYMMDD')
+        file_name = f'{city_name}-{end_date or current_day}-订单.csv'
+        file_path = os.path.join(file_path, file_name)
         df.to_csv(file_path, index=False)
         print(f'Total {df.index.size} order records exported to {file_path} done.')
 
-    def export_store(self):
+    def export_store(self, file_path='/tmp'):
         """
         导出门店数据，包含门店 ID、名称、坐标、创建时间
         """
@@ -174,7 +178,8 @@ class DataLoader(object):
         if count == 0:
             print('No records found.')
             return
-        file_path = f'../data/门店数据.csv'
+        file_name = '门店.csv'
+        file_path = os.path.join(file_path, file_name)
         df.to_csv(file_path, index=False)
         print(f'Total {df.index.size} store records exported to {file_path} done.')
 
