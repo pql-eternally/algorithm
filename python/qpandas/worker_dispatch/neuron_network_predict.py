@@ -6,6 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import tensorflow as tf
+from tensorflow.python.keras.layers import Input, Dense, concatenate
+from tensorflow.python.keras.models import Model
+
 
 def sigmoid(x):
     # Sigmoid 激活函数: f(x) = 1 / (1 + e^(-x))
