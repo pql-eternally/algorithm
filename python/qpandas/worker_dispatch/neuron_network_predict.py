@@ -164,6 +164,9 @@ def test_neural_network():
 
 
 def test_keras():
+    """
+    使用keras实现神经网络预测订单量
+    """
     df = pd.read_csv('../data/线上门店天气单量数据.csv')
 
     # 选取需要的特征列，并做数据归一化处理
@@ -189,8 +192,8 @@ def test_keras():
     model.fit(scaled_x, scaled_y, epochs=1000, batch_size=10)
 
     # 评估模型
-    loss = model.evaluate(scaled_x, scaled_y)
-    print(f"loss: {loss}")
+    # loss = model.evaluate(scaled_x, scaled_y)
+    # print(f"loss: {loss}")
 
     # 预测结果
     predict_data = {
@@ -209,8 +212,8 @@ def test_keras():
     predict_df = pd.DataFrame(predict_data)
     predict_data = min_max_scaler.fit_transform(predict_df[feature_columns])
     predict_result = model.predict(predict_data)
-    print(f"predict result: {predict_result}")
-
     # 预测结果反归一化
     predict_order = standard_scaler.inverse_transform(predict_result)
-    print(f"predict order: {predict_order}")
+    predict_df['预测单量'] = predict_order
+    # print(f"Day {day} predict order: {predict_order}")
+    print(predict_df)

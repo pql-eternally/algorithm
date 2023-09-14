@@ -252,6 +252,8 @@ class DataLoader(object):
             '暴雪': 34,
         }
         df['天气'] = df['天气状况'].apply(lambda x: compute_weather_level(x))
+        # 按小时
+
         city_name = {
             'beijing': '北京',
             'shanghai': '上海',
