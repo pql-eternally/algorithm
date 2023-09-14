@@ -126,32 +126,92 @@ class OurNeuralNetwork:
         return loss_data
 
 
-df = pd.read_csv('../data/线上门店天气单量数据.csv')
-# 定义数据集 data
+def load_df():
+    """
+    加载数据，数据标准化/归一化处理
+    """
+    df = pd.read_csv('../data/线上门店天气单量数据.csv')
+    size = df.index.size
+    avg_temperature = sum(df['温度']) / size
+    avg_order = sum(df['单量']) / size
+    df['温度'] = df['温度'] - avg_temperature
+    df['星期'] = df['星期'] - 3
+    df['单量'] = (df['单量'] - avg_order) / avg_order
+    return df
 
-#  数据标准化/归一化处理
-size = df.index.size
-avg_temperature = sum(df['温度']) / size
-avg_order = sum(df['单量']) / size
-df['温度'] = df['温度'] - avg_temperature
-df['星期'] = df['星期'] - 3
-df['单量'] = (df['单量'] - avg_order) / avg_order
-data = np.array(df[['温度', '星期']])
-all_y_trues = np.array(df['单量'])
 
-# 训练我们的神经网络!
-network = OurNeuralNetwork()
-loss_data = network.train(data, all_y_trues)
+def test_neural_network():
+    df = load_df()
+    data = np.array(df[['温度', '星期']])
+    all_y_trues = np.array(df['单量'])
+    # 训练我们的神经网络!
+    network = OurNeuralNetwork()
+    loss_data = network.train(data, all_y_trues)
 
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-ax.set_xlabel("epoch")  # 横坐标名
-ax.set_ylabel("loss")  # 纵坐标名
-ax.set_title("Neural Network Loss vs. Epochs")
-epoch = range(0, 1000, 10)  # 100个点
-plt.plot(epoch, loss_data)  # 绘图
-plt.show()
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.set_xlabel("epoch")  # 横坐标名
+    ax.set_ylabel("loss")  # 纵坐标名
+    ax.set_title("Neural Network Loss vs. Epochs")
+    epoch = range(0, 1000, 10)  # 100个点
+    plt.plot(epoch, loss_data)  # 绘图
+    plt.show()
 
-# 神经网络预测
-predict_data = np.array([22, 3])
-print(f"predict result: {network.feedforward(predict_data)}")
+    # 神经网络预测
+    predict_data = np.array([22, 3])
+    print(f"predict result: {network.feedforward(predict_data)}")
+
+
+def test_keras():
+    df = pd.read_csv('../data/线上门店天气单量数据.csv')
+
+    # 数据归一化处理
+    avg_temperature = df['温度'].mean()
+    avg_order = df['单量'].mean()
+    df['温度'] = df['温度'] - avg_temperature
+    df['星期'] = df['星期'] - 3
+    df['单量'] = (df['单量'] - avg_order) / avg_order
+
+    # 选取需要的特征列
+    feature_columns = ['温度', '星期', '天气', '是否节假日', '是否周末', '是否雨天', '是否晴天', '是否阴天', '是否多云', '风力']
+    data = np.array(df[feature_columns])
+    all_y_trues = np.array(df['单量'])
+
+    # 定义模型
+    feature_size = len(feature_columns)
+    inputs = Input(shape=(feature_size,))
+    x = Dense(feature_size, activation='sigmoid')(inputs)
+    x = Dense(feature_size, activation='sigmoid')(x)
+    outputs = Dense(1, activation='sigmoid')(x)
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy', 'mse'])
+
+    # 训练模型
+    model.fit(data, all_y_trues, epochs=1000, batch_size=10)
+
+    # 评估模型
+    loss = model.evaluate(data, all_y_trues)
+    print(f"loss: {loss}")
+
+    # 预测结果
+    predict_data = {
+        '日期': [20230913, 20230914, 20230915],
+        '温度': [29, 28, 26.5],
+        '星期': [3, 4, 5],
+        '天气': [12, 24, 24],
+        '是否节假日': [0, 0, 0],
+        '是否周末': [0, 0, 0],
+        '是否雨天': [0, 1, 1],
+        '是否晴天': [0, 0, 0],
+        '是否阴天': [0, 0, 0],
+        '是否多云': [1, 0, 0],
+        '风力': [2, 2, 2],
+    }
+    predict_df = pd.DataFrame(predict_data)
+    predict_data = np.array(predict_df[feature_columns])
+    predict_result = model.predict(predict_data)
+    print(f"predict result: {predict_result}")
+
+    # 预测结果反归一化
+    predict_order = predict_result * avg_order + avg_order
+    print(f"predict order: {predict_order}")
