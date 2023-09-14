@@ -9,6 +9,7 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow.python.keras.layers import Input, Dense, concatenate
 from tensorflow.python.keras.models import Model
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 def sigmoid(x):
@@ -165,17 +166,15 @@ def test_neural_network():
 def test_keras():
     df = pd.read_csv('../data/线上门店天气单量数据.csv')
 
-    # 数据归一化处理
-    avg_temperature = df['温度'].mean()
-    avg_order = df['单量'].mean()
-    df['温度'] = df['温度'] - avg_temperature
-    df['星期'] = df['星期'] - 3
-    df['单量'] = (df['单量'] - avg_order) / avg_order
+    # 选取需要的特征列，并做数据归一化处理
+    feature_columns = ['温度', '星期', '天气', '是否节假日', '是否周末', '是否雨天', '是否晴天',
+                       '是否阴天', '是否多云', '风力']
+    predict_column = '单量'
+    min_max_scaler = MinMaxScaler()
+    scaled_x = min_max_scaler.fit_transform(df[feature_columns])
 
-    # 选取需要的特征列
-    feature_columns = ['温度', '星期', '天气', '是否节假日', '是否周末', '是否雨天', '是否晴天', '是否阴天', '是否多云', '风力']
-    data = np.array(df[feature_columns])
-    all_y_trues = np.array(df['单量'])
+    standard_scaler = StandardScaler()
+    scaled_y = standard_scaler.fit_transform(df[[predict_column]])
 
     # 定义模型
     feature_size = len(feature_columns)
@@ -184,13 +183,13 @@ def test_keras():
     x = Dense(feature_size, activation='sigmoid')(x)
     outputs = Dense(1, activation='sigmoid')(x)
     model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy', 'mse'])
+    model.compile(optimizer='adam', loss='mse')
 
     # 训练模型
-    model.fit(data, all_y_trues, epochs=1000, batch_size=10)
+    model.fit(scaled_x, scaled_y, epochs=1000, batch_size=10)
 
     # 评估模型
-    loss = model.evaluate(data, all_y_trues)
+    loss = model.evaluate(scaled_x, scaled_y)
     print(f"loss: {loss}")
 
     # 预测结果
@@ -208,10 +207,10 @@ def test_keras():
         '风力': [2, 2, 2],
     }
     predict_df = pd.DataFrame(predict_data)
-    predict_data = np.array(predict_df[feature_columns])
+    predict_data = min_max_scaler.fit_transform(predict_df[feature_columns])
     predict_result = model.predict(predict_data)
     print(f"predict result: {predict_result}")
 
     # 预测结果反归一化
-    predict_order = predict_result * avg_order + avg_order
+    predict_order = standard_scaler.inverse_transform(predict_result)
     print(f"predict order: {predict_order}")
