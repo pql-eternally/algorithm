@@ -1,4 +1,4 @@
-name,datetime,温度,feelslike,dew,humidity,降雨,precipprob,preciptype,snow,snowdepth,windgust,windspeed,winddir,sealevelpressure,cloudcover,visibility,solarradiation,solarenergy,uvindex,severerisk,conditions,icon
+城市,时间,温度,体感温度,露水,潮湿,降雨,降雨概率,preciptype,下雪,下雪深度,windgust,风速,风向角度,海平面压力,云层,可见度,太阳辐射,solarenergy,uvindex,severerisk,天气现象,icon
 shenzhen,2023-08-01T00:00:00,28.5,33,24.3,77.94,0,0,,0,0,15.1,14,100,1006,30,10,0,0,0,10,Partially cloudy,partly-cloudy-night
 shenzhen,2023-08-01T01:00:00,28.5,33,24.3,77.94,0,0,,0,0,14.4,11,86,1005,30,10,0,0,0,10,Partially cloudy,partly-cloudy-night
 shenzhen,2023-08-01T02:00:00,26.6,26.6,25,91.04,0,0,,0,0,25.2,7,99,1005,60,29,0,0,0,10,Partially cloudy,partly-cloudy-night
@@ -983,3 +983,4 @@ shenzhen,2023-09-10T20:00:00,25.2,25.2,24.1,93.78,0,0,rain,0,0,21.6,4.3,122,1008
 shenzhen,2023-09-10T21:00:00,26.5,26.5,24.2,86.86,0,0,rain,0,0,16.9,15,99,1008.4,50,10,0,0,0,10,Partially cloudy,partly-cloudy-night
 shenzhen,2023-09-10T22:00:00,26.5,26.5,23.7,84.44,0,0,rain,0,0,16.2,16.3,102,1008.4,50,10,0,0,0,10,Partially cloudy,partly-cloudy-night
 shenzhen,2023-09-10T23:00:00,25.2,25.2,24.2,94.03,0,0,,0,0,21.6,7.6,80,1008.3,91.9,31.1,0,0,0,10,Overcast,cloudy
+,,,,,,,,,,,,,,,,,,,,,,
