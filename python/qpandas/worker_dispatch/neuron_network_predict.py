@@ -217,3 +217,51 @@ def test_keras():
     predict_df['预测单量'] = predict_order
     # print(f"Day {day} predict order: {predict_order}")
     print(predict_df)
+
+
+def test_lstm():
+    """
+    使用LSTM实现神经网络预测订单量
+    """
+    from tensorflow.python.keras.models import Sequential
+    from tensorflow.python.keras.layers import LSTM
+    from scikeras.wrappers import KerasRegressor
+    from sklearn.model_selection import GridSearchCV
+
+    df = pd.read_csv('../data/线上门店天气单量数据.csv')
+
+    # 选取需要的特征列，并做数据归一化处理
+    feature_columns = ['温度', '星期', '天气', '是否节假日', '是否周末', '是否雨天', '是否晴天',
+                       '是否阴天', '是否多云', '风力']
+    predict_column = '单量'
+    min_max_scaler = MinMaxScaler()
+    scaled_x = min_max_scaler.fit_transform(df[feature_columns])
+    train_x = np.reshape(scaled_x, (scaled_x.shape[0], 1, scaled_x.shape[1]))
+
+    standard_scaler = StandardScaler()
+    scaled_y = standard_scaler.fit_transform(df[[predict_column]])
+    train_y = np.reshape(scaled_y, (scaled_y.shape[0], 1, scaled_y.shape[1]))
+
+    def build_model():
+        model = Sequential()
+        model.add(LSTM(10))
+        model.add(Dense(1))
+        model.compile(loss='mse', optimizer='nadam')
+        return model
+
+    # 定义模型
+    grid_model = KerasRegressor(model=build_model, verbose=0)
+    # 定义优化器
+    optimizers = ['adam', 'rmsprop']
+    # 定义训练次数
+    epochs = [10, 50, 100]
+    # 定义批次大小
+    batches = [5, 10, 20]
+    # 定义参数网格
+    param_grid = dict(optimizer=optimizers, epochs=epochs, batch_size=batches)
+    # 定义网格搜索
+    grid = GridSearchCV(estimator=grid_model, param_grid=param_grid, n_jobs=-1, cv=3)
+    # 执行网格搜索
+    grid_result = grid.fit(train_x, train_y)
+    # 打印结果
+    print(grid_result)
