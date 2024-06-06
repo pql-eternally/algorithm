@@ -1,7 +1,7 @@
 import datetime
 import heapq
-import types
 import time
+import types
 
 
 class Task:
@@ -95,8 +95,11 @@ def main():
 
     This is what a user would typically write.
     """
-    loop = SleepingLoop(countdown('A', 5), countdown('B', 3, delay=2),
-                        countdown('C', 4, delay=1))
+    loop = SleepingLoop(
+        countdown('A', 5),
+        countdown('B', 3, delay=2),
+        countdown('C', 4, delay=1)
+    )
     start = datetime.datetime.now()
     loop.run_until_complete()
     print('Total elapsed time is', datetime.datetime.now() - start)

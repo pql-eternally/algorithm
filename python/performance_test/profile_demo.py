@@ -8,6 +8,11 @@ python -m line_profiler profile_demo.py.lprof
 
 测试一下代码总的效率以及各个部分的效率
 python -m cProfile profile_demo.py
+
+python -m cProfile [-o output_file] [-s sort_order] (-m module | myscript.py)
+-o 将profile 结果写入文件而不是标准输出
+-s 指定 sort_stats() 排序值之一以对输出进行排序。这仅适用于未提供 -o 的情况
+-m 指定要分析的是模块而不是脚本。
 """
 import functools
 

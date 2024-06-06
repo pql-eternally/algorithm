@@ -15,6 +15,7 @@ html = """
         <form action="" onsubmit="sendMessage(event)">
             <input type="text" id="messageText" autocomplete="off"/>
             <button>Send</button>
+            <button>Close</button>
         </form>
         <ul id='messages'>
         </ul>
